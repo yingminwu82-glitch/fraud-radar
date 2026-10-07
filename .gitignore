@@ -1,0 +1,11 @@
+.env
+*.db
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+.pytest_cache/
+.venv/
+.python-packages/
+.test-deps/
+node_modules/
+dist/

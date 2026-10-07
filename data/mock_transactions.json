@@ -1,0 +1,5 @@
+[
+  {"transaction_id":"TX-001","ip_address":"203.0.113.42","transaction_amount":2500,"currency":"USD","user_country":"US","transaction_country":"DE","transaction_velocity":7,"account_age_days":4,"scenario":"country mismatch, elevated velocity, new account"},
+  {"transaction_id":"TX-002","ip_address":"198.51.100.18","transaction_amount":890,"currency":"USD","user_country":"US","transaction_country":"US","transaction_velocity":2,"account_age_days":450,"scenario":"watchlist network with otherwise familiar context"},
+  {"transaction_id":"TX-003","ip_address":"8.8.8.8","transaction_amount":120,"currency":"USD","user_country":"GB","transaction_country":"GB","transaction_velocity":1,"account_age_days":900,"scenario":"low indicator baseline"}
+]
