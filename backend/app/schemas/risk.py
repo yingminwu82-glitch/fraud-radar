@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, IPvAnyAddress
 
@@ -42,13 +42,14 @@ class TransactionInput(BaseModel):
 
 class AnalyzeRequest(TransactionInput):
     risk_profile_id: int
+    refresh_provider_data: bool = False
 
 
 class NormalizedSignal(BaseModel):
     category: str
     factor: str
-    value: str | float | bool | None = None
-    risk_score: float = Field(ge=0, le=100)
+    value: Any = None
+    risk_score: float | None = Field(default=None, ge=0, le=100)
     confidence: float = Field(default=1.0, ge=0, le=1)
     provider: str
     missing: bool = False
@@ -57,20 +58,24 @@ class NormalizedSignal(BaseModel):
 class FactorScore(BaseModel):
     factor: str
     raw_signal: str
-    risk_score: float
+    risk_score: float | None
     user_preference: int
     weight: float
     contribution: float
     providers: list[str]
+    evidence_strength: float = 0
+    risk_coefficient: float = 0
 
 
 class AnalyzeResponse(BaseModel):
+    analysis_id: int
     transaction_id: str
     risk_score: float
     risk_level: str
     risk_profile: str
     factor_scores: list[FactorScore]
     provider_results: list[dict]
+    categories: list[dict] = []
     provider_agreement: list[str]
     missing_signals: list[str]
     explanation: list[str]

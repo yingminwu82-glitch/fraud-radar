@@ -2,8 +2,12 @@ from abc import ABC, abstractmethod
 
 
 class LLMProvider(ABC):
-    """Future language layer: explain structured results; never calculate scores."""
+    """Interpret trusted, structured Risk Engine output; never calculate risk."""
 
     @abstractmethod
-    async def explain(self, structured_result: dict) -> str:
+    async def generate_report(self, context: dict) -> dict:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def answer(self, context: dict, history: list[dict], question: str) -> str:
         raise NotImplementedError

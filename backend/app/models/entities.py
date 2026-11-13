@@ -51,6 +51,7 @@ class RiskAnalysis(Base):
     risk_score: Mapped[float] = mapped_column(Float)
     risk_level: Mapped[str] = mapped_column(String(20))
     explanation: Mapped[list] = mapped_column(JSON, default=list)
+    structured_result: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
     transaction: Mapped[Transaction] = relationship(back_populates="analyses")
     risk_profile: Mapped[RiskProfile] = relationship(back_populates="analyses")
@@ -64,4 +65,39 @@ class ProviderResult(Base):
     analysis_id: Mapped[int] = mapped_column(ForeignKey("risk_analyses.id"))
     provider_name: Mapped[str] = mapped_column(String(80))
     signals: Mapped[list] = mapped_column(JSON, default=list)
+    raw_result: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    status: Mapped[str] = mapped_column(String(32), default="success")
+    latency_ms: Mapped[float | None] = mapped_column(Float, nullable=True)
+    error_message: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    subject: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    source_mode: Mapped[str] = mapped_column(String(16), default="mock")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
     analysis: Mapped[RiskAnalysis] = relationship(back_populates="provider_results")
+
+
+class AIReport(Base):
+    __tablename__ = "ai_reports"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    analysis_id: Mapped[int] = mapped_column(ForeignKey("risk_analyses.id", ondelete="CASCADE"), unique=True, index=True)
+    model_name: Mapped[str] = mapped_column(String(120))
+    report_json: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)
+
+
+class ChatSession(Base):
+    __tablename__ = "chat_sessions"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    analysis_id: Mapped[int] = mapped_column(ForeignKey("risk_analyses.id", ondelete="CASCADE"), index=True)
+    context_type: Mapped[str] = mapped_column(String(32), default="report")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc, onupdate=now_utc)
+
+
+class ChatMessage(Base):
+    __tablename__ = "chat_messages"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    session_id: Mapped[int] = mapped_column(ForeignKey("chat_sessions.id", ondelete="CASCADE"), index=True)
+    role: Mapped[str] = mapped_column(String(16))
+    content: Mapped[str] = mapped_column(String(4000))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)

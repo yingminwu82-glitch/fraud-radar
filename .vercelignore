@@ -1,0 +1,14 @@
+# Keep local Python environments and test-only packages out of serverless bundles.
+**/.venv/**
+**/.python-packages/**
+**/.test-deps/**
+**/__pycache__/**
+**/.pytest_cache/**
+backend/tests/**
+
+# Local databases and development artifacts are not needed in production.
+**/*.db
+.tmp-*/**
+.tmp-*.zip
+.memorax-code/**
+memorax-fix/**

@@ -1,3 +1,3 @@
-from app.services.fraud_providers.mock import MockFraudProvider
+from app.services.fraud_providers.mock import MockProvider
 
-__all__ = ["MockFraudProvider"]
+__all__ = ["MockProvider"]

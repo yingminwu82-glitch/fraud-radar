@@ -1,8 +1,8 @@
-import { Activity, Bell, Bot, CircleHelp, FileText, Gauge, Network, Settings2, SlidersHorizontal, WalletCards } from 'lucide-react'
+import { Activity, Bell, CircleHelp, Database, FileText, Gauge, Network, Settings2, SlidersHorizontal, WalletCards } from 'lucide-react'
 
 const items = [
   {group:'WORKSPACE', links:[['Overview', Gauge], ['Transaction Analysis', WalletCards], ['Risk Preferences', SlidersHorizontal]]},
-  {group:'INTELLIGENCE', links:[['API Monitoring', Network], ['AI Reports', FileText], ['Fraud Detective', Bot]]},
+  {group:'INTELLIGENCE', links:[['API Monitoring', Network], ['AI Reports', FileText], ['Provider Evidence', Database]]},
   {group:'SYSTEM', links:[['Settings', Settings2]]},
 ] as const
 
